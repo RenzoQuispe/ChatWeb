@@ -1,6 +1,7 @@
 import User from "../models/user.model.js"
 import bcrypt from "bcryptjs"
 import { createAccessToken } from "../lib/jwt_utils.js";
+import cloudinary from "../lib/cloudinary.js";
 
 export const register = async (req, res) => {
     const { email, username, password } = req.body;
@@ -85,7 +86,7 @@ export const logout = (req, res) => {
     }
 };
 
-export const updateProfile = async (req, res) => {
+export const actualizarPerfil = async (req, res) => {
     try {
         const { fotoPerfil } = req.body;
         const userId = req.user._id;

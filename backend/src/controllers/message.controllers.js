@@ -48,20 +48,20 @@ export const sendMessage = async (req, res) => {
             imageUrl = uploadResponse.secure_url;
         }
 
-        const newMessage = new Message({
+        const nuevoMessage = new Message({
             emisorId,
             receptorId,
             text,
             image: imageUrl,
         });
 
-        await newMessage.save();
+        await nuevoMessage.save();
 
         /*
         // Socket.io para la comuniacion en tiempo real
         const receiverSocketId = getReceiverSocketId(receptorId);
         if (receiverSocketId) {
-          io.to(receiverSocketId).emit("newMessage", newMessage);
+          io.to(receiverSocketId).emit("nuevoMessage", nuevoMessage);
         }
         */
 
