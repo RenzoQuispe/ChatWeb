@@ -65,7 +65,7 @@ export const sendMessage = async (req, res) => {
         }
         */
 
-        res.status(201).json(newMessage);
+        res.status(201).json(nuevoMessage);
     } catch (error) {
         console.log("Error al intentar enviar mensaje: ", error.message);
         res.status(500).json({ error: "Server error" });

@@ -47,9 +47,7 @@ const AjustesPage = () => {
         <div className="rounded-xl border border-base-300 overflow-hidden bg-base-100 shadow-lg">
           <div className="p-4 bg-base-200">
             <div className="max-w-lg mx-auto">
-              {/* Mock Chat UI */}
               <div className="bg-base-100 rounded-xl shadow-sm overflow-hidden">
-                {/* Chat Header */}
                 <div className="px-4 py-3 border-b border-base-300 bg-base-100">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-content font-medium">
@@ -96,7 +94,7 @@ const AjustesPage = () => {
                       type="text"
                       className="input input-bordered flex-1 text-sm h-10"
                       placeholder="Type a message..."
-                      value="This is a preview"
+                      value=":D"
                       readOnly
                     />
                     <button className="btn btn-primary h-10 min-h-0">
