@@ -1,6 +1,5 @@
 import User from "../models/user.model.js";
 import Message from "../models/message.model.js";
-
 import cloudinary from "../lib/cloudinary.js";
 import { getReceiverSocketId, io } from "../lib/socket.js";
 
@@ -54,17 +53,14 @@ export const sendMessage = async (req, res) => {
             text,
             image: imageUrl,
         });
-
         await nuevoMessage.save();
 
-        /*
-        // Socket.io para la comuniacion en tiempo real
+        // Socket.io para la comunicacion en tiempo real
         const receiverSocketId = getReceiverSocketId(receptorId);
         if (receiverSocketId) {
           io.to(receiverSocketId).emit("nuevoMessage", nuevoMessage);
         }
-        */
-
+        
         res.status(201).json(nuevoMessage);
     } catch (error) {
         console.log("Error al intentar enviar mensaje: ", error.message);

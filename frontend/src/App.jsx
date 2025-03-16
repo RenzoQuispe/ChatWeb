@@ -10,12 +10,12 @@ import { estadoAuth } from "./estados/estadoAuth";
 import { useEffect } from "react";
 import { Loader } from "lucide-react";
 import { Toaster } from "react-hot-toast";
-import {estadoTheme} from "./estados/estadoTheme"
+import { estadoTheme } from "./estados/estadoTheme"
 
 const App = () => {
-  const { authUser, checkAuth, isCheckingAuth } = estadoAuth();
-
-  const {theme} = estadoTheme();
+  const { authUser, checkAuth, isCheckingAuth, onlineUsers } = estadoAuth();
+  console.log({ onlineUsers });
+  const { theme } = estadoTheme();
 
   useEffect(() => {
     checkAuth();
@@ -35,14 +35,14 @@ const App = () => {
     <div data-theme={theme}>
       <Navbar />
       <Routes>
-        <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login"/> } />
-        <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/"/>} />
-        <Route path="/register" element={!authUser ? <RegisterPage /> : <Navigate to="/"/>} />
+        <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
+        <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
+        <Route path="/register" element={!authUser ? <RegisterPage /> : <Navigate to="/" />} />
         <Route path="/ajustes" element={<AjustesPage />} />
-        <Route path="/perfil" element={authUser ?  <PerfilPage /> : <Navigate to="/login"/>} />
+        <Route path="/perfil" element={authUser ? <PerfilPage /> : <Navigate to="/login" />} />
 
       </Routes>
-      <Toaster/>
+      <Toaster />
     </div>
   )
 }

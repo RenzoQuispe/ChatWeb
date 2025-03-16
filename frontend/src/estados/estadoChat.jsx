@@ -4,12 +4,13 @@ import { axiosInstance } from "../lib/axios";
 import { estadoAuth } from "./estadoAuth";
 
 export const estadoChat = create((set, get) => ({
-    messages: [],
+    messages: [], //Tiempo real
     users: [],
     selectedUser: null,
     isUsersLoading: false,
     isMessagesLoading: false,
 
+    setSelectedUser: (selectedUser) => set({ selectedUser }),
     getUsers: async () => {
         set({ isUsersLoading: true });
         try {
@@ -41,29 +42,24 @@ export const estadoChat = create((set, get) => ({
             toast.error(error.response.data.message);
         }
     },
-    setSelectedUser: (selectedUser) => set({ selectedUser }),
-    /*
+    // ver a tiempo real los mensajes
     subscribeToMessages: () => {
         const { selectedUser } = get();
         if (!selectedUser) return;
 
-        const socket = useAuthStore.getState().socket;
+        const socket = estadoAuth.getState().socket;
 
-        socket.on("newMessage", (newMessage) => {
-            const isMessageSentFromSelectedUser = newMessage.senderId === selectedUser._id;
-            if (!isMessageSentFromSelectedUser) return;
-
+        socket.on("nuevoMessage", (nuevoMessage) => {
+            if (nuevoMessage.emisorId !== selectedUser._id) return;
             set({
-                messages: [...get().messages, newMessage],
+                messages: [...get().messages, nuevoMessage],
             });
         });
     },
 
     unsubscribeFromMessages: () => {
-        const socket = useAuthStore.getState().socket;
-        socket.off("newMessage");
+        const socket = estadoAuth.getState().socket;
+        socket.off("nuevoMessage");
     },
 
-    
-    */
 }))

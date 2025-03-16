@@ -1,0 +1,22 @@
+{
+  "name": "chatweb",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "",
+    "start": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RenzoQuispe/ChatWeb.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/RenzoQuispe/ChatWeb/issues"
+  },
+  "homepage": "https://github.com/RenzoQuispe/ChatWeb#readme",
+  "description": ""
+}

@@ -7,7 +7,6 @@ import { Users } from "lucide-react";
 
 const BarraContactos = () => {
     const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading } = estadoChat();
-
     const { onlineUsers } = estadoAuth();
     const [showOnlineOnly, setShowOnlineOnly] = useState(false);
 
@@ -28,7 +27,7 @@ const BarraContactos = () => {
                     <Users className="size-6" />
                     <span className="font-medium hidden lg:block">Contactos</span>
                 </div>
-                
+                {/* Filtrar usuarios online */}
                 <div className="mt-3 hidden lg:flex items-center gap-2">
                     <label className="cursor-pointer flex items-center gap-2">
                         <input
@@ -56,7 +55,7 @@ const BarraContactos = () => {
                     >
                         <div className="relative mx-auto lg:mx-0">
                             <img
-                                src={user.profilePic || "/avatar.png"}
+                                src={user.fotoPerfil || "/avatar.png"}
                                 alt={user.name}
                                 className="size-12 object-cover rounded-full"
                             />

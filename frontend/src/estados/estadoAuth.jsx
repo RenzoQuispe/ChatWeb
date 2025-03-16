@@ -1,20 +1,25 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios.js"
 import toast from "react-hot-toast";
+import { io } from "socket.io-client";
 
-export const estadoAuth = create((set) => ({
+const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
+
+
+export const estadoAuth = create((set, get) => ({  //get para una funcion de estadoAuth dentro de una funcion de estadoAuth
     authUser: null,
     isCheckingAuth: null,
     isLoggingIn: false,
     isSigningUp: false,
     isUpdatingprofile: false,
-    onlineUsers: [],
+    onlineUsers: [], //Tiempo real
+    socket: null,
     checkAuth: async () => {
         try {
             const res = await axiosInstance.get("/auth/check");
 
             set({ authUser: res.data });
-            //get().connectSocket();
+            get().connectSocket();
         } catch (error) {
             console.log("Error in checkAuth:", error);
             set({ authUser: null });
@@ -28,7 +33,7 @@ export const estadoAuth = create((set) => ({
             const res = await axiosInstance.post("/auth/register", data);
             set({ authUser: res.data });
             toast.success("Cuenta crada :D");
-            //get().connectSocket()
+            get().connectSocket()
         } catch (error) {
             toast.error(error.response.data.message);
         } finally {
@@ -40,7 +45,7 @@ export const estadoAuth = create((set) => ({
             await axiosInstance.post("/auth/logout");
             set({ authUser: null });
             toast.success("Logout correctamente :D");
-            //get().disconnectSocket();
+            get().disconnectSocket();
         } catch (error) {
             toast.error(error.response.data.message);
         }
@@ -52,7 +57,7 @@ export const estadoAuth = create((set) => ({
             set({ authUser: res.data });
             toast.success("Logeao exitoso :D");
 
-            //get().connectSocket();
+            get().connectSocket();
         } catch (error) {
             toast.error(error.response.data.message);
         } finally {
@@ -71,5 +76,26 @@ export const estadoAuth = create((set) => ({
         } finally {
             set({ isUpdatingProfile: false });
         }
+    },
+    //Ver a tiempo real la conexion de contactos
+    connectSocket: () => {
+        const { authUser } = get();
+        if (!authUser || get().socket?.connected) return;
+
+        const socket = io(BASE_URL, {
+            query: {
+                userId: authUser._id,
+            },
+        });
+        socket.connect();
+
+        set({ socket: socket });
+
+        socket.on("getOnlineUsers", (userIds) => {
+            set({ onlineUsers: userIds });
+        });
+    },
+    disconnectSocket: () => {
+        if (get().socket?.connected) get().socket.disconnect();
     },
 })); 

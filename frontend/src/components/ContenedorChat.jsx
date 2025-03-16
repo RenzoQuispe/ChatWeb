@@ -1,12 +1,11 @@
 // Para HomePage
 import { estadoChat } from "../estados/estadoChat";
 import { useEffect, useRef } from "react";
-
+import { estadoAuth } from "../estados/estadoAuth";
+import { formatMessageTime } from "../lib/utils";
 import HeaderChat from "./HeaderChat";
 import MessageInput from "./MessageInput";
 import MessageSkeleton from "./skeletons/MessageSkeleton";
-import { estadoAuth } from "../estados/estadoAuth";
-import { formatMessageTime } from "../lib/utils";
 
 const ChatContainer = () => {
     const {
@@ -14,23 +13,19 @@ const ChatContainer = () => {
         getMessages,
         isMessagesLoading,
         selectedUser,
-        //subscribeToMessages,
-        //unsubscribeFromMessages,
+        subscribeToMessages,
+        unsubscribeFromMessages,
     } = estadoChat();
     const { authUser } = estadoAuth();
     const messageEndRef = useRef(null);
 
-    useEffect(() => {
-        getMessages(selectedUser._id);
-    }, [selectedUser._id, getMessages]);
-    /*
+    // Mensajes a tiempo real
     useEffect(() => {
         getMessages(selectedUser._id);
         subscribeToMessages();
         return () => unsubscribeFromMessages();
     }, [selectedUser._id, getMessages, subscribeToMessages, unsubscribeFromMessages]);
-    */
-    
+    //Scroll inmediatamente se tiene un mensaje nuevo
     useEffect(() => {
         if (messageEndRef.current && messages) {
             messageEndRef.current.scrollIntoView({ behavior: "smooth" });
