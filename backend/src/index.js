@@ -10,7 +10,6 @@ import path from "path";
 
 dotenv.config();
 const PORT = process.env.PORT;
-//const __dirname = path.resolve();
 
 app.use(express.json({ limit: '50mb' })); //Aumenta el límite del body a 50MB
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
@@ -26,7 +25,9 @@ app.use(
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
-/*
+// Servir el frontend en producción cuando la aplicación está en un entorno de despliegue (production).
+// En la etapa de desarrollo, en el archivo .env, estaba NODE_ENV=development
+const __dirname = path.resolve();
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
@@ -34,7 +35,7 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
   });
 }
-*/
+
 
 server.listen(PORT, () => {
     console.log("Server ejecutandose en el puerto:" + PORT);
