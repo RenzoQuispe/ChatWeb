@@ -1,0 +1,44 @@
+- name: Desplegar frontend de ChatWeb
+  hosts: web
+  become: true
+  vars_files:
+    - ../group_vars/web.yml
+
+  tasks:
+    - name: Instalar dependencias del frontend
+      command: npm install
+      args:
+        chdir: "{{ FRONTEND_DIR }}"
+      when: not skip_install
+
+    - name: Compilar frontend con Vite
+      command: npm run build
+      args:
+        chdir: "{{ FRONTEND_DIR }}"
+
+    - name: Instalar Nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+      when: not skip_install
+
+    - name: Copiar configuración de Nginx (frontend + backend proxy)
+      template:
+        src: ../files/nginx.conf
+        dest: "{{ NGINX_SITE_PATH }}"
+        mode: "0644"
+      notify: Recargar Nginx
+
+    - name: Habilitar sitio de Nginx
+      file:
+        src: "{{ NGINX_SITE_PATH }}"
+        dest: "/etc/nginx/sites-enabled/ChatWeb"
+        state: link
+        force: yes
+
+  handlers:
+    - name: Recargar Nginx
+      service:
+        name: nginx
+        state: restarted
