@@ -2,7 +2,27 @@
 
 Chat Web simple hecho con MongoDB, React.js, Node.js-Express y Socket.io
 
-### Diagrama de arquitectura de despliegue local automatizado con Ansible
+### Configuracion Ansible
+#### Requisitos para despliegue en red local automatizado con Ansible
+- Tener la base de datos MongoDB local configurada
+- Ansible instalado
+- Configurar el ansible/group_vars/web.yml. En el ejemplo tenemos
+    APP_NAME: ChatWeb
+    APP_DIR: "/home/renzoquispe/Escritorio/Renzo/Proyectos/ChatWeb"    //MODIFICAR
+    FRONTEND_DIR: "{{ APP_DIR }}/frontend"
+    BACKEND_DIR: "{{ APP_DIR }}/backend"
+    BACKEND_PORT: 5001      // Modificar donde se ejecute el backend
+    NGINX_SITE_PATH: /etc/nginx/sites-available/ChatWeb    //MODIFICAR(RECOMENDABLE)
+    skip_install: true
+    SERVER: 192.168.1.10    //MODIFICAR
+
+#### Uso de Configuracion Ansible para levantar la aplicacion 
+```
+https://github.com/RenzoQuispe/ChatWeb.git
+cd ansible
+ansible-playbook -i inventory.ini playbooks/deploy-all.yml --ask-become-pass
+```
+### Diagrama de arquitectura de despliegue en red local automatizado con Ansible
 ```
                     ╔═══════════════════════════════════════════╗
                     ║         Clientes en red local             ║
@@ -38,10 +58,10 @@ Chat Web simple hecho con MongoDB, React.js, Node.js-Express y Socket.io
 ```
 
 Ejemplo:
-![](https://drive.google.com/file/d/12FgGooiLqKMId30fo-MA28y54PTFoHV3/view?usp=drive_link)
+![](https://drive.google.com/uc?export=view&id=12FgGooiLqKMId30fo-MA28y54PTFoHV3)
 
 ### Setup .env
-Modificar el .env de ejemplo en el codigo
+Configurar el .env de ejemplo en el codigo
 ```
 MONGODB_URI=
 mongodb_user=
@@ -49,7 +69,7 @@ mongodb_password=
 mongodb_database=
 PORT=
 JWT_SECRET=
-NODE_ENV=
+NODE_ENV=localserver   //localserver, para despligue en red local
 CLOUDINARY_CLOUD_NAME=
 CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET=
