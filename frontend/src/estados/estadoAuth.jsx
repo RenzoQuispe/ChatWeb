@@ -3,7 +3,9 @@ import { axiosInstance } from "../lib/axios.js"
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
-const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
+const BASE_URL = ["development", "localserver"].includes(import.meta.env.MODE)
+  ? "http://localhost:5001"
+  : "/";
 
 
 export const estadoAuth = create((set, get) => ({  //get para una funcion de estadoAuth dentro de una funcion de estadoAuth
