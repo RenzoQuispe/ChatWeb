@@ -9,7 +9,7 @@
       command: npm install
       args:
         chdir: "{{ FRONTEND_DIR }}"
-      when: not skip_install
+      #when: not skip_install
 
     - name: Compilar frontend con Vite
       command: npm run build
@@ -21,7 +21,7 @@
         name: nginx
         state: present
         update_cache: yes
-      when: not skip_install
+      #when: not skip_install
 
     - name: Copiar configuración de Nginx (frontend + backend proxy)
       template:

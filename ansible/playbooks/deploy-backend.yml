@@ -13,13 +13,13 @@
           - npm
         state: present
         update_cache: yes
-      when: not skip_install
+      #when: not skip_install
 
     - name: Instalar PM2 globalmente
       npm:
         name: pm2
         global: yes
-      when: not skip_install
+      #when: not skip_install
 
     - name: Instalar dependencias del backend
       command: npm install
