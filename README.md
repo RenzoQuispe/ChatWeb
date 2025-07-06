@@ -6,7 +6,8 @@ Chat Web simple hecho con MongoDB, React.js, Node.js-Express y Socket.io
 #### Requisitos para despliegue en red local automatizado con Ansible
 - Tener la base de datos MongoDB local configurada
 - Ansible instalado
-- Configurar el ansible/group_vars/web.yml. En el ejemplo tenemos
+- Configurar el ansible/group_vars/web.yml. En el ejemplo tenemos:
+```
     APP_NAME: ChatWeb
     APP_DIR: "/home/renzoquispe/Escritorio/Renzo/Proyectos/ChatWeb"    //MODIFICAR
     FRONTEND_DIR: "{{ APP_DIR }}/frontend"
@@ -15,6 +16,8 @@ Chat Web simple hecho con MongoDB, React.js, Node.js-Express y Socket.io
     NGINX_SITE_PATH: /etc/nginx/sites-available/ChatWeb    //MODIFICAR(RECOMENDABLE)
     skip_install: true
     SERVER: 192.168.1.10    //MODIFICAR
+```
+
 
 #### Uso de Configuracion Ansible para levantar la aplicacion 
 ```
