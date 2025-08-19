@@ -1,0 +1,43 @@
+services:
+  # contenedor backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend_app
+    ports: 
+      - "${NODE_PORT}:${NODE_PORT}"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    env_file:
+      - ./.env
+    depends_on:
+      - mongo
+  # contenedor frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend_app
+    env_file:
+      - ./.env    
+    ports: 
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+  # base de datos
+  mongo:
+    image: mongo:latest
+    container_name: mongo_db
+    ports:
+      - "${MONGO_PORT}:${MONGO_PORT}"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASS}
+    volumes:
+      - mongo_data:/data/db
+# persistencia de datos
+volumes:
+  mongo_data:
