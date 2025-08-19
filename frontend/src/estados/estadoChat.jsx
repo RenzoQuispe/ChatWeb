@@ -3,6 +3,19 @@ import toast from "react-hot-toast";
 import { axiosInstance } from "../lib/axios";
 import { estadoAuth } from "./estadoAuth";
 
+// Función auxiliar para comparar arrays de usuarios
+const areUsersEqual = (users1, users2) => {
+    if (!users1 || !users2) return false;
+    if (users1.length !== users2.length) return false;
+    
+    return users1.every((user1, index) => {
+        const user2 = users2[index];
+        return user1._id === user2._id && 
+               user1.username === user2.username && 
+               user1.fotoPerfil === user2.fotoPerfil;
+    });
+};
+
 export const estadoChat = create((set, get) => ({
     messages: [], //Tiempo real
     users: [],
@@ -11,17 +24,37 @@ export const estadoChat = create((set, get) => ({
     isMessagesLoading: false,
 
     setSelectedUser: (selectedUser) => set({ selectedUser }),
-    getUsers: async () => {
-        set({ isUsersLoading: true });
+
+    getUsers: async (showLoading = true) => {
+        const { users: currentUsers } = get();
+        
         try {
+            if (showLoading && currentUsers.length === 0) {
+                set({ isUsersLoading: true });
+            }
+            
             const res = await axiosInstance.get("/messages/users");
-            set({ users: res.data });
+            const newUsers = res.data;
+            
+            // Solo actualizar si hay cambios reales
+            if (!areUsersEqual(currentUsers, newUsers)) {
+                set({ users: newUsers });
+            }
+            
         } catch (error) {
-            toast.error(error.response.data.message);
+            if (showLoading) {
+                toast.error(error.response.data.message);
+            }
         } finally {
             set({ isUsersLoading: false });
         }
     },
+
+    refreshUsers: async () => {
+        const { getUsers } = get();
+        await getUsers(false);
+    },
+
     getMessages: async (userId) => {
         set({ isMessagesLoading: true });
         try {
@@ -33,6 +66,7 @@ export const estadoChat = create((set, get) => ({
             set({ isMessagesLoading: false });
         }
     },
+
     enviarMessage: async (messageData) => {
         const { selectedUser, messages } = get();
         try {
@@ -42,13 +76,12 @@ export const estadoChat = create((set, get) => ({
             toast.error(error.response.data.message);
         }
     },
+
     // ver a tiempo real los mensajes
     subscribeToMessages: () => {
         const { selectedUser } = get();
         if (!selectedUser) return;
-
         const socket = estadoAuth.getState().socket;
-
         socket.on("nuevoMessage", (nuevoMessage) => {
             if (nuevoMessage.emisorId !== selectedUser._id) return;
             set({
@@ -61,5 +94,4 @@ export const estadoChat = create((set, get) => ({
         const socket = estadoAuth.getState().socket;
         socket.off("nuevoMessage");
     },
-
-}))
+}));
