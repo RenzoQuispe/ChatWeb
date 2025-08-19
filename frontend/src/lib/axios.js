@@ -7,7 +7,7 @@ const baseURL = (() => {
     case "LocalServerDocker":
       return import.meta.env.VITE_API_URL + "/api";
     default:
-      return "http://localhost:5001/api";
+      return "http://localhost:3000/api";
   }
 })();
 
