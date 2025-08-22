@@ -1,8 +1,0 @@
-APP_NAME: ChatWeb
-APP_DIR: "/home/renzoquispe/Escritorio/Renzo/Proyectos/ChatWeb"
-FRONTEND_DIR: "{{ APP_DIR }}/frontend"
-BACKEND_DIR: "{{ APP_DIR }}/backend"
-BACKEND_PORT: 5001
-NGINX_SITE_PATH: /etc/nginx/sites-available/ChatWeb
-skip_install: true
-SERVER: 192.168.1.10
