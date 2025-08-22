@@ -35,6 +35,7 @@ Accede a la aplicación web desde cualquier dispositivo en tu red local usando: 
 
 ## ChatWeb
 
-![](../ChatWeb/frontend/public/img/readme/chat1.png)
-![](../ChatWeb/frontend/public/img/readme/chat2.png)
+![](./docs/img/readme/chat1.png)
+
+![](./docs/img/readme/chat2.png)
 
